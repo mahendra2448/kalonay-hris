@@ -34,4 +34,11 @@ class MonthlyData extends Model
         'created_by',
         'updated_by'
     ];
+
+    /**
+     * Refer to the employee record.
+     */
+    public function employeeName() {
+        return $this->hasOne(\App\Models\Employee::class, 'id', 'employee_id');
+    }
 }

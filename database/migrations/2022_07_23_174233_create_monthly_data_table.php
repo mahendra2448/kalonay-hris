@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('employee_id')->required()->constrained('employees');
             $table->foreignId('month_id')->required()->constrained('months');
             $table->string('year', 4)->required()->default(date('Y'));
-            $table->string('application')->required();
-            $table->smallInteger('achievements')->required()->default(0);
+            $table->string('application')->nullable();
+            $table->smallInteger('achievements')->nullable()->default(0);
             $table->smallInteger('leave_days')->required()->default(0);
             $table->smallInteger('late_morning')->required()->default(0);
             $table->smallInteger('late_evening')->required()->default(0);

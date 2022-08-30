@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('deductions', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->required();
-            $table->string('value')->nullable();
+            $table->integer('value')->nullable();
             $table->string('created_by', 100)->nullable();
             $table->string('updated_by', 100)->nullable();
             $table->timestamps();
