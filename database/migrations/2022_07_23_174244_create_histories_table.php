@@ -32,6 +32,7 @@ return new class extends Migration
             $table->integer('loan')->nullable()->default(0);
             $table->integer('other_deduction')->nullable()->default(0);
             $table->integer('tax_amount')->nullable()->default(0);
+            $table->integer('total_deduction')->nullable()->default(0);
             $table->integer('total_salary')->nullable()->default(0);
             $table->text('notes')->nullable()->default('-');
             $table->dateTime('saved_date')->required();

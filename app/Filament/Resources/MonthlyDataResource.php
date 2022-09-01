@@ -68,10 +68,12 @@ class MonthlyDataResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make('employee.name'),
+                Tables\Columns\TextColumn::make('employee.phone')
                     ->hidden(fn (User $user): bool => auth()->user()->hasRole('Viewer')),
-                Tables\Columns\TextColumn::make('positionName.name'),
+                Tables\Columns\TextColumn::make('employee.positionName.name'),
+                Tables\Columns\TextColumn::make('month.name'),
+                Tables\Columns\TextColumn::make('total_salary')->money('IDR', '.'),
                 Tables\Columns\TextColumn::make('created_at')->since(),
             ])
             ->actions([

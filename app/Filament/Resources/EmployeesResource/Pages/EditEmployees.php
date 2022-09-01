@@ -31,14 +31,9 @@ class EditEmployees extends EditRecord
         ];
     }
     
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['updated_by'] = auth()->user()->name;
-        return $data;
-    }
-    
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        $data['updated_by'] = auth()->user()->name;
         $record->update($data);
         activity('employee')
             ->causedBy(auth()->user())

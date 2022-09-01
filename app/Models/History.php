@@ -9,6 +9,8 @@ class History extends Model
 {
     use HasFactory;
 
+    protected $table = 'histories';
+
     protected $fillable = [
         'employee_id',
         'month_id',
@@ -24,9 +26,10 @@ class History extends Model
         'bpjs_kenaker_amount',
         'loan',
         'other_deduction',
-        'tax',
+        'tax_amount',
         'application',
         'allowance',
+        'total_deduction',
         'total_salary',
         'notes',
         'created_by', //by 'System'

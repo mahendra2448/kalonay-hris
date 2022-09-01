@@ -89,7 +89,7 @@ class Employee extends Model
     }
     
     /**
-     * A User has one role.
+     * A User has one Position.
      */
     public function positionName() {
         return $this->hasOne(\App\Models\Position::class, 'id', 'position_id');
