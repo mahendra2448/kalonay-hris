@@ -30,6 +30,8 @@ return new class extends Migration
             $table->integer('bpjs_kes_amount')->nullable()->default(0);
             $table->integer('bpjs_kenaker_amount')->nullable()->default(0);
             $table->integer('loan')->nullable()->default(0);
+            $table->integer('parking_amount')->nullable()->default(0);
+            $table->integer('insurance_amount')->nullable()->default(0);
             $table->integer('other_deduction')->nullable()->default(0);
             $table->integer('tax_amount')->nullable()->default(0);
             $table->integer('total_deduction')->nullable()->default(0);

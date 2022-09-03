@@ -35,9 +35,9 @@ class MonthlyDataResource extends Resource
         return $form
             ->schema([
                 Card::make()->schema([
-                    Select::make('employee_id')->label('Nama Employee')->options(Employee::all()->pluck('name', 'id'))->required(),
+                    Select::make('employee_id')->label('Nama Employee')->options(Employee::all()->pluck('name', 'id'))->searchable()->required(),
                     MultiSelect::make('application')->label('Aplikasi/Partner (untuk Desk Collector)')->options(Application::all()->pluck('name', 'id'))->nullable(),
-                    Select::make('month_id')->label('Bulan')->options(Month::all()->pluck('name', 'id'))->required(),
+                    Select::make('month_id')->label('Bulan')->options(Month::all()->pluck('name', 'id'))->searchable()->required(),
                     TextInput::make('year')->default(date('Y'))->required(),
                 ])->columns(2),
                 Card::make()->schema([
@@ -75,10 +75,13 @@ class MonthlyDataResource extends Resource
                 Tables\Columns\TextColumn::make('month.name'),
                 Tables\Columns\TextColumn::make('total_salary')->money('IDR', '.'),
                 Tables\Columns\TextColumn::make('created_at')->since(),
+                Tables\Columns\TextColumn::make('updated_at')->since(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->hidden(fn (User $user): bool => auth()->user()->hasRole('Viewer')),
+                Tables\Actions\Action::make('trybutt')
+                    ->label('To Google')->url('https://google.com')->color('success'),
             ])
             ->bulkActions([]);
     }

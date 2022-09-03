@@ -18,20 +18,20 @@ use Illuminate\Support\Facades\DB;
 class CreateMonthlyData extends CreateRecord
 {
     protected static string $resource = MonthlyDataResource::class;
-    protected $dataInput = [];
+    protected $dataInput, $empDetails = [];
     
     protected function handleRecordCreation(array $data): Model
     {
         $achType = AchievementType::select('type', 'percentage', 'top_limit', 'bottom_limit')->get();
-        $empDetails = Employee::where('id', $data['employee_id'])->first();
-        $empDailySalary = $empDetails->main_salary / $empDetails->workdays;
-        $empTempSalary = $empDetails->main_salary;
+        $this->empDetails = Employee::where('id', $data['employee_id'])->first();
+        $empDailySalary = $this->empDetails->main_salary / $this->empDetails->workdays;
+        $empTempSalary = $this->empDetails->main_salary;
 
         /**
          * Filter for Desk Collector only
          * 14 is the id on 'positions' table
          */
-        if ($empDetails->position_id == 14) {
+        if ($this->empDetails->position_id == 14) {
             foreach ($achType as $ach) {
                 $empAch = ($data['achievements'] != null) ? $data['achievements'] : 0;
                 if ($empAch <= $ach->top_limit && $empAch >= $ach->bottom_limit) {
@@ -61,13 +61,13 @@ class CreateMonthlyData extends CreateRecord
         $empMorningAbs = (array_key_exists('late_morning', $data)) ? ((int) $data['late_morning'] * $ded['late_morning']) : 0;        
         $empEveningAbs = (array_key_exists('late_evening', $data)) ? ((int) $data['late_evening'] * $ded['late_evening']) : 0;
         $empTaxAdditional = (int) $data['additional_insentives_tax'];
-        $empBpjsKes = (int) ($data['bpjs_kes_amount'] > 0) ? $data['bpjs_kes_amount'] : $empDetails->bpjs_kes_amount;
-        $empBpjsTK = (int) ($data['bpjs_kenaker_amount'] > 0) ? $data['bpjs_kenaker_amount'] : $empDetails->bpjs_kenaker_amount;
+        $empBpjsKes = (int) ($data['bpjs_kes_amount'] > 0) ? $data['bpjs_kes_amount'] : $this->empDetails->bpjs_kes_amount;
+        $empBpjsTK = (int) ($data['bpjs_kenaker_amount'] > 0) ? $data['bpjs_kenaker_amount'] : $this->empDetails->bpjs_kenaker_amount;
         $empLoan = (int) $data['loan'];
         $empOtherDeduct = (int) $data['other_deduction'];
-        $empTax = (int) ($data['tax_amount'] > 0) ? $data['tax_amount'] : $empDetails->tax_amount;
-        $empInsurance = (int) $empDetails->insurance_amount;
-        $empParking = (int) $empDetails->parking_amount;
+        $empTax = (int) ($data['tax_amount'] > 0) ? $data['tax_amount'] : $this->empDetails->tax_amount;
+        $empInsurance = (int) $this->empDetails->insurance_amount;
+        $empParking = (int) $this->empDetails->parking_amount;
 
         $deductions = array_sum([
             $empLeaveDeduct,$empLateMin,$empMorningAbs,$empEveningAbs,$empTaxAdditional,$empBpjsKes,$empBpjsTK,$empLoan,$empOtherDeduct,$empTax,$empInsurance,$empParking
@@ -84,17 +84,12 @@ class CreateMonthlyData extends CreateRecord
         $data['total_deduction'] = $deductions;
         $data['created_by'] = auth()->user()->name;
 
-        if (array_sum([$empInsurance, $empParking]) > 0) {
-            $data['other_deduction'] = array_sum([(int) $data['other_deduction'], $empInsurance, $empParking]);
-            $data['notes'] = $data['notes'] . ' || Deduction lainnya --- Asuransi: Rp '. $empInsurance .',00. Parkir: Rp '. $empParking .',00';
-        }
-
         $this->dataInput = $data; // override to global variable
 
 
         activity('monthly-update')
             ->causedBy(auth()->user())
-            ->log(\Str::title(auth()->user()->name) . ' has create monthly update for ' . $empDetails->name);
+            ->log(\Str::title(auth()->user()->name) . ' has create monthly update for ' . $this->empDetails->name);
 
         return static::getModel()::create($data);
     }
@@ -105,6 +100,7 @@ class CreateMonthlyData extends CreateRecord
          * For History
          */
         $data = $this->dataInput;
+        $emp = $this->empDetails;
 
         try {
             DB::beginTransaction();
@@ -122,11 +118,13 @@ class CreateMonthlyData extends CreateRecord
                 'bpjs_kes_amount' => $data['bpjs_kes_amount'],
                 'bpjs_kenaker_amount' => $data['bpjs_kenaker_amount'],
                 'loan' => $data['loan'],
+                'parking_amount' => $emp->parking_amount,
+                'insurance_amount' => $emp->insurance_amount,
                 'other_deduction' => $data['other_deduction'],
                 'tax_amount' => $data['tax_amount'],
                 'application' => $data['application'],
                 'allowance' => $data['allowance'],
-                'total_salary' => $data['allowance'],
+                'total_salary' => $data['total_salary'],
                 'total_deduction' => $data['total_deduction'],
                 'notes' => $data['notes'],
                 'created_by' => 'Auto System',

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/hr-app', 301);
 
 Route::get('/make-pass/{string}', function ($string) {
     return bcrypt($string);

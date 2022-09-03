@@ -96,15 +96,10 @@ class EditMonthlyData extends EditRecord
          * Additional data to save
          */
         $apps = Application::whereIn('id', $data['application'])->pluck('name');
-        $data['application'] = json_encode($apps);
+        $data['application'] = (!empty($record->application)) ? $record->application : json_encode($apps);
         $data['total_salary'] = $totalSalary;
         $data['total_deduction'] = $deductions;
         $data['updated_by'] = auth()->user()->name;
-
-        if (array_sum([$empInsurance, $empParking]) > 0) {
-            $data['other_deduction'] = array_sum([(int) $data['other_deduction'], $empInsurance, $empParking]);
-            $data['notes'] = $data['notes'] . ' || Deduction lainnya --- Asuransi: Rp '. $empInsurance .',00. Parkir: Rp '. $empParking .',00';
-        }
 
         $this->dataInput = $data; // override to global variable
 
