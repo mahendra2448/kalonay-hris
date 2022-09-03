@@ -52,11 +52,9 @@ class User extends Authenticatable
     public function roleName() {
         return $this->hasOne(\Spatie\Permission\Models\Role::class, 'id', 'role');
     }
-
-    /**
-     * For causer_id on activity_log.
-     */
-    // public function causerName() {
-    //     return $this->hasOne(\Spatie\Activitylog\Models\Activity::class, 'causer_id');
-    // }
+ 
+    public function canAccessFilament(): bool
+    {
+        return str_ends_with($this->email, '@hr.com');
+    }
 }

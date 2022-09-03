@@ -31,7 +31,7 @@ class CreateMonthlyData extends CreateRecord
          * Filter for Desk Collector only
          * 14 is the id on 'positions' table
          */
-        if ($this->empDetails->position_id == 14) {
+        if ($this->empDetails->position_id == 15) {
             foreach ($achType as $ach) {
                 $empAch = ($data['achievements'] != null) ? $data['achievements'] : 0;
                 if ($empAch <= $ach->top_limit && $empAch >= $ach->bottom_limit) {
