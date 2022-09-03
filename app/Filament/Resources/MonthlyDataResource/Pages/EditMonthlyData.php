@@ -48,7 +48,7 @@ class EditMonthlyData extends EditRecord
          * Filter for Desk Collector only
          * 14 is the id on 'positions' table
          */
-        if ($empDetails->position_id == 14) {
+        if ($empDetails->position_id == 15) {
             foreach ($achType as $ach) {
                 $empAch = ($data['achievements'] != null) ? $data['achievements'] : 0;
                 if ($empAch <= $ach->top_limit && $empAch >= $ach->bottom_limit) {
