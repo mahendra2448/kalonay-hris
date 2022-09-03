@@ -54,7 +54,6 @@ class MonthlyData extends Model
     protected function application(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => json_encode($value), // encode to string
             get: fn ($value) => json_decode($value), // decode to array when accessed
         );
     }

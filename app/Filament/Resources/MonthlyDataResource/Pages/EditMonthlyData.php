@@ -96,7 +96,7 @@ class EditMonthlyData extends EditRecord
          * Additional data to save
          */
         $apps = Application::whereIn('id', $data['application'])->pluck('name');
-        $data['application'] = (!empty($record->application)) ? $record->application : json_encode($apps);
+        $data['application'] = (!empty($record->application)) ? json_encode($record->application) : json_encode($apps);
         $data['total_salary'] = $totalSalary;
         $data['total_deduction'] = $deductions;
         $data['updated_by'] = auth()->user()->name;
