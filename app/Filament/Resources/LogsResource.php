@@ -26,7 +26,7 @@ class LogsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
     protected static ?string $navigationLabel = 'Logs';
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationGroup = 'Advanced Settings';
     protected static ?string $modelLabel = 'Activity Logs';
 
     public static function table(Table $table): Table

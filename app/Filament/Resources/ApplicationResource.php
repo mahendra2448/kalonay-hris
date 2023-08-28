@@ -20,8 +20,8 @@ class ApplicationResource extends Resource
     protected static ?string $model = Application::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-view-grid';
-    protected static ?string $navigationGroup = 'Advanced';
     protected static ?string $navigationLabel = 'Application/Partner';
+    protected static ?string $navigationGroup = 'Basic Settings';
     protected static ?string $modelLabel = 'Application/Partner';
 
     public static function form(Form $form): Form

@@ -20,7 +20,7 @@ class PositionResource extends Resource
     protected static ?string $model = Position::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
-    protected static ?string $navigationGroup = 'Advanced';
+    protected static ?string $navigationGroup = 'Basic Settings';
 
     public static function form(Form $form): Form
     {
