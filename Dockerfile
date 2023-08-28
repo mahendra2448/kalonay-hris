@@ -73,10 +73,10 @@ RUN groupmod -g 'stat -c %g /var/www/html' www-data || true
 
 # Enable apache modules
 RUN a2enmod rewrite headers
-RUN echo "ServerName hris-dev.kalonay.com" >> /etc/apache2/apache2.conf
-RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+# RUN echo "ServerName hris-dev.kalonay.com" >> /etc/apache2/apache2.conf
+# RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
-COPY ./build/000-default.conf /etc/apache2/sites-available/000-default.conf
+# COPY ./build/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy app to folder as an environment
 COPY ./ /var/www/html
