@@ -1,3 +1,7 @@
+# DO NOT MODIFY THIS FILE IF DID KNOW UNDERSTAND!!!
+# =================================================
+
+
 # 
 # PHP Composer Dependencies
 # 
@@ -62,7 +66,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd pdo_pgsql
 
 # Expose database port
-EXPOSE 3306
 EXPOSE 5432
 
 # Set environment
@@ -73,10 +76,9 @@ RUN groupmod -g 'stat -c %g /var/www/html' www-data || true
 
 # Enable apache modules
 RUN a2enmod rewrite headers
-# RUN echo "ServerName hris-dev.kalonay.com" >> /etc/apache2/apache2.conf
-# RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
-# COPY ./build/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./build/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy app to folder as an environment
 COPY ./ /var/www/html
@@ -89,7 +91,6 @@ COPY --from=vendor /app/vendor ./vendor
 
 # Copy Frontend build
 COPY --from=frontend /app/node_modules ./node_modules
-# COPY --from=frontend /app/public/js ./public/js
 
 # setting up the app
 COPY .env.example /var/www/html/.env
